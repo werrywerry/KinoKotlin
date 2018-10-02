@@ -16,9 +16,12 @@ class CollectionsManager {
         return collections
     }
 
-    fun removeCollection(name: String, collections: TreeMap<String, ArrayList<Film>>): TreeMap<String, ArrayList<Film>> {
+    fun removeCollection(name: String, parent: String, collections: TreeMap<String, ArrayList<Film>>): TreeMap<String, ArrayList<Film>> {
+        if (parent == "") {
+            collections.remove(name)
+        } else {
 
-        collections.remove(name)
+        }
         return collections
     }
 

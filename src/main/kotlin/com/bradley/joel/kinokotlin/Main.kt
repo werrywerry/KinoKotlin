@@ -142,7 +142,13 @@ class Main: Application() {
     private fun removeCollection() {
         if (collectionsPane.treeView.treeView.selectionModel.selectedItem != null &&
                 collectionsPane.treeView.treeView.selectionModel.selectedItem.value != "Collections") {
-            collections = CollectionsManager().removeCollection(collectionsPane.treeView.treeView.selectionModel.selectedItem.value, collections)
+            if (collectionsPane.treeView.treeView.selectionModel.selectedItem.parent.value == "Collections") {
+                collections = CollectionsManager().removeCollection(collectionsPane.treeView.treeView.selectionModel.selectedItem.value, "", collections)
+            } else {
+                collections = CollectionsManager().removeCollection(collectionsPane.treeView.treeView.selectionModel.selectedItem.value,
+                        collectionsPane.treeView.treeView.selectionModel.selectedItem.parent.value,
+                        collections)
+            }
         }
         collectionsPane.treeView.refreshTreeView(collections)
     }
