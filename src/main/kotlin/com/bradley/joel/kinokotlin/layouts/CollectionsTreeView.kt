@@ -12,7 +12,7 @@ interface OnCollectionSelectListener {
 }
 
 
-class CollectionsTreeView(collections: TreeMap<String, ArrayList<Film>>) : ScrollPane() {
+class CollectionsTreeView(collections: TreeMap<String, TreeMap<String, Film>>) : ScrollPane() {
 
     var mOnCollectionSelectListener: OnCollectionSelectListener? = null
 
@@ -39,15 +39,14 @@ class CollectionsTreeView(collections: TreeMap<String, ArrayList<Film>>) : Scrol
         hbarPolicy = ScrollBarPolicy.NEVER
     }
 
-    fun refreshTreeView(collections: TreeMap<String, ArrayList<Film>>) {
+    fun refreshTreeView(collections: TreeMap<String, TreeMap<String, Film>>) {
         rootItem.children.clear()
         for (collection in collections) {
             val collectionItem = TreeItem(collection.key)
             rootItem.children.add(collectionItem)
             collectionItem.isExpanded = true
-            for (film in collection.value) {
-                var filmItem = TreeItem(film.Title)
-                collectionItem.children.add(filmItem)
+            for (film in collections.get(collectionItem.value)!!) {
+                collectionItem.children.add(TreeItem(film.key))
             }
         }
     }

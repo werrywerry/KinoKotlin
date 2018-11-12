@@ -78,7 +78,7 @@ class Main: Application() {
 
         splitPane.orientation = Orientation.HORIZONTAL
         collectionsPane.newButton.setOnAction { newCollection() }
-        collectionsPane.removeButton.setOnAction { removeCollection() }
+        collectionsPane.removeButton.setOnAction { removeCollectionItem() }
         setTreeViewListener()
         splitPane.items.addAll(collectionsPane, mainLayout)
 
@@ -122,30 +122,36 @@ class Main: Application() {
                         detailedLayout.addButton.setOnAction { addFilmToCollection(film) }
                     }
 */
+
                 } else {
-                    val collectionName = collectionsPane.treeView.treeView.selectionModel.selectedItem.value
-                    filmsToDisplay = resetFilmsToDisplay(collections[collectionName]!!)
-                    mainLayout.filmGrid.populateGrid(collections[collectionName]!!, gridImagesList, newColumnCount)
+                    val collection = collectionsPane.treeView.treeView.selectionModel.selectedItem.value
+                    filmsToDisplay.clear()
+                    for (film in collections[collection]!!)
+                        filmsToDisplay.add(film.value)
+                        mainLayout.filmGrid.populateGrid(filmsToDisplay, gridImagesList, newColumnCount)
                 }
             }
         }
     }
 
     private fun addFilmToCollection(film: Film) {
-        if (collectionsPane.treeView.treeView.selectionModel.selectedItem != null &&
-                collectionsPane.treeView.treeView.selectionModel.selectedItem.value != "Collections") {
-            collections = CollectionsManager().addFilmToCollection(collections, collectionsPane.treeView.treeView.selectionModel.selectedItem.value, film)
+        val selectedItem = collectionsPane.treeView.treeView.selectionModel.selectedItem
+        if (selectedItem != null &&
+                selectedItem.value != "Collections") {
+            collections = CollectionsManager().addFilmToCollection(collections, selectedItem.value, film)
             collectionsPane.treeView.refreshTreeView(collections)
+            splitPane.items[1] = mainLayout
         }
+        collectionsPane.treeView.treeView.selectionModel.select(selectedItem)
     }
 
-    private fun removeCollection() {
+    private fun removeCollectionItem() {
         if (collectionsPane.treeView.treeView.selectionModel.selectedItem != null &&
                 collectionsPane.treeView.treeView.selectionModel.selectedItem.value != "Collections") {
             if (collectionsPane.treeView.treeView.selectionModel.selectedItem.parent.value == "Collections") {
-                collections = CollectionsManager().removeCollection(collectionsPane.treeView.treeView.selectionModel.selectedItem.value, "", collections)
+                collections = CollectionsManager().removeCollectionItem(collectionsPane.treeView.treeView.selectionModel.selectedItem.value, "", collections)
             } else {
-                collections = CollectionsManager().removeCollection(collectionsPane.treeView.treeView.selectionModel.selectedItem.value,
+                collections = CollectionsManager().removeCollectionItem(collectionsPane.treeView.treeView.selectionModel.selectedItem.value,
                         collectionsPane.treeView.treeView.selectionModel.selectedItem.parent.value,
                         collections)
             }

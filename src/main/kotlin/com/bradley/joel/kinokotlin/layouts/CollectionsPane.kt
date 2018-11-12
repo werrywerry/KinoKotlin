@@ -10,7 +10,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import java.util.*
 
-class CollectionsPane(collections: TreeMap<String, ArrayList<Film>>): VBox(20.0) {
+class CollectionsPane(collections: TreeMap<String, TreeMap<String, Film>>): VBox(20.0) {
 
     val removeButton = Button("Remove")
     val newButton = Button("New")
