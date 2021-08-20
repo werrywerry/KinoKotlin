@@ -5,6 +5,6 @@ Currently not working.
 Error reporting work needs doing.
 
 Written in Kotlin and JavaFX with various Java libraries.
-Written based on the model view controller methodology.
+Written based on the model view controller design pattern.
 
 All rights reserved by respective authors.
